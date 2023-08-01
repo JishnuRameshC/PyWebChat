@@ -1,63 +1,38 @@
-{% extends 'main.html' %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
 
-{% block content %}
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+    <title>Pywebchat</title>
+</head>
 
+<body>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
 {% if page == 'login' %}
-<div>
-    <form method="POST" action="">
-        {% csrf_token %}
 
-        <label>Username:</label>
-        <input type="text" name="username" placeholder="Enter Username" />
-
-        <label>Password:</label>
-        <input type="password" name="password" placeholder="Enter Password" />
-
-        <input type="submit" value="Login" />
-    </form>
-
-    <p>havent signed up yet?</p>
-    <a href="{% url 'register' %}">Sign up</a>
-</div>
+    {% include 'userlogin/login.html' %}
 
 {% else %}
 
-<div>
-    <form action="" method ="post">
-        {% csrf_token %}
-        <div >
-            <label for="username">Username</label>
-            <input class="form-control" type="text"  name="username" id="username">
-        </div>
-        
-        <div >
-            <label for="email">Email Address <span class="text-danger">*</span></label>
-            <input class="form-control" type="email"  name="email" id="email">
-        </div>
+    {% include 'userlogin/signup.html' %}
 
-        <div >
-            <div class="col-sm-6">
-                <label for="password1">Password <span class="text-danger">*</span></label>
-                <input  class="form-control" type="password"  id="password1" name="password1">
-            </div>
-            <div class="col-sm-6">
-                <label for="password2">Confirm Password <span class="text-danger">*</span></label>
-                <input class="form-control" type="password"  id="password2" name="password2">
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-lg-4 text-right">
-                <button class="btn btn-action" type="submit">Register</button>
-            </div>
-        </div>
-    </form>
-    <p>Already signed up yet?</p>
-    <a href="{% url 'login' %}">Login</a>
-</div>
 {% endif %}
 
-{% endblock content %}
+
+
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

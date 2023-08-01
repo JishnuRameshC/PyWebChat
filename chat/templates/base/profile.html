@@ -12,12 +12,12 @@
       <div class="profile">
         <div class="profile__avatar">
           <div class="avatar avatar--large active">
-            <img src="{{user.avatar.url}}" />
+            <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture">
           </div>
         </div>
         <div class="profile__info">
-          <h3>{{user.name}}</h3>
-          <p>@{{user.username}}</p>
+          <h3>{{ user.userprofile.user.username }}</h3>
+          <p>@{{ user.userprofile.user.username }}</p>
           {% if request.user == user %}
           <a href="{% url 'update-user' %}" class="btn btn--main btn--pill">Edit Profile</a>
           {% endif %}
@@ -25,7 +25,7 @@
         <div class="profile__about">
           <h3>About</h3>
           <p>
-            {{user.bio}}
+            {{ user.userprofile.bio }}
           </p>
         </div>
       </div>

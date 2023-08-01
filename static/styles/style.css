@@ -3,8 +3,8 @@
 :root {
   --color-main: #71c6dd;
   --color-main-light: #e1f6fb;
-  --color-black: #000000;
-  --color-dark-medium:#2d2d39 ;
+  --color-dark: #3f4156;
+  --color-dark-medium: #51546e;
   --color-dark-light: #696d97;
   --color-light: #e5e5e5;
   --color-gray: #8b8b8b;
@@ -15,7 +15,6 @@
 }
 
 /*========== base styles ==========*/
-
 
 * {
   font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
@@ -49,13 +48,17 @@ body {
   font-weight: 400;
   font-size: 1.5rem;
   color: var(--color-light-gray);
-  background-color: black ;
+  background-color: var(--color-bg);
   min-height: 100vh;
+}
+
+img {
+  width: 100%;
 }
 
 a {
   display: inline-block;
-  color: #71c6dd;
+  color: var(--color-main);
   text-decoration: none;
 }
 
@@ -93,7 +96,7 @@ a {
 
 .btn--main {
   background-color: var(--color-main);
-  color: black;
+  color: var(--color-dark);
 }
 
 .btn:hover {
@@ -128,6 +131,135 @@ a {
   cursor: pointer;
 }
 
+.avatar {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  border: 2px solid var(--color-main);
+}
+
+.avatar img {
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.avatar::after {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: var(--color-gray);
+  z-index: 111;
+  border-radius: 50%;
+  border: 0.3rem solid var(--color-dark);
+}
+
+.avatar.active::after {
+  background-color: var(--color-success);
+}
+
+.avatar.avatar--small img {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.avatar.avatar--small:after {
+  width: 0.7rem;
+  height: 0.7rem;
+  bottom: 0px;
+  right: -6px;
+}
+
+.avatar.avatar--medium img {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+}
+
+.avatar.avatar--medium:after {
+  width: 0.7rem;
+  height: 0.7rem;
+  bottom: 0px;
+  right: -6px;
+}
+
+.avatar.avatar--large img {
+  display: block;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+}
+
+.avatar.avatar--large:after {
+  width: 1rem;
+  height: 1rem;
+  bottom: 2px;
+  right: 3.5px;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 0.6rem;
+  background-color: rgb(41, 41, 46);
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background-color: var(--color-gray);
+}
+
+.dropdown-menu {
+  z-index: 111;
+  position: absolute;
+  top: 5rem;
+  right: 0.5rem;
+  background: var(--color-dark-light);
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: none;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-menu a {
+  padding: 1.2rem 4rem;
+  display: block;
+  color: var(--color-light) !important;
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
+.dropdown-menu a:hover {
+  background-color: var(--color-dark-medium);
+}
+
+.dropdown-menu > a:not(:last-child) {
+  border-bottom: 1px solid var(--color-dark-medium);
+}
+
+.dropdown-menu a svg {
+  fill: var(--color-light);
+}
+
+.mobile-menu {
+  margin-bottom: 3rem;
+}
+
+.mobile-menuItems {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media screen and (min-width: 500px) {
+  .mobile-menu {
+    display: none;
+  }
+}
 
 /*==============================
 =>  Header Section
@@ -168,7 +300,7 @@ a {
   align-items: center;
   gap: 1rem;
   border-radius: 4px;
-} 
+}
 
 .header__search svg {
   fill: var(--color-gray);
@@ -347,7 +479,7 @@ a {
 ================================*/
 
 .form__group {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   width: 100%;
 }
 
@@ -479,10 +611,9 @@ a {
 @media screen and (max-width: 500px) {
   .mobile-menu .header__search {
     display: block;
-    margin-bottom: 3rem;
+    margin-bottom: 2.4rem;
   }
 }
-
 
 /*==============================
 =>  Room List
@@ -492,7 +623,7 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2.4rem;
 }
 
 .roomList__header h2 {

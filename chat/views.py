@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from .models import Room, Topic, Message, User
-from .forms import RoomForm
-
+from .forms import RoomForm, CustomUserChangeForm
+from django.contrib.auth.forms import UserChangeForm
 
 def loginPage(request):
     page = 'login'
@@ -88,7 +88,7 @@ def userProfile(request, pk):
     return render(request, 'base/profile.html', context)
 
 
-
+@login_required(login_url='login')
 def createRoom(request):
     form = RoomForm()
     topics = Topic.objects.all()
@@ -108,7 +108,7 @@ def createRoom(request):
     return render(request, 'base/room_form.html', context)
 
 
-
+@login_required(login_url='login')
 def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
     form = RoomForm(instance=room)
@@ -128,7 +128,7 @@ def updateRoom(request, pk):
     context = {'form': form, 'topics': topics, 'room': room}
     return render(request, 'base/room_form.html', context)
 
-
+@login_required(login_url='login')
 def deleteRoom(request, pk):
     room = Room.objects.get(id=pk)
 
@@ -141,7 +141,7 @@ def deleteRoom(request, pk):
     return render(request, 'base/delete.html', {'obj': room})
 
 
-
+@login_required(login_url='login')
 def deleteMessage(request, pk):
     message = Message.objects.get(id=pk)
 
@@ -154,19 +154,19 @@ def deleteMessage(request, pk):
     return render(request, 'base/delete.html', {'obj': message})
 
 
-
+@login_required
 def updateUser(request):
     user = request.user
-    form = UserForm(instance=user)
+    form = CustomUserChangeForm(instance=user)
 
     if request.method == 'POST':
-        form = UserForm(request.POST, request.FILES, instance=user)
+        form = CustomUserChangeForm(instance=user)
         if form.is_valid():
             form.save()
+            print("Form data:", form.cleaned_data) 
             return redirect('user-profile', pk=user.id)
 
     return render(request, 'base/update-user.html', {'form': form})
-
 
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
