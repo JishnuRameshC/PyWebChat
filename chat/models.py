@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
-    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True)
+    profile_picture = models.ImageField(null=True, default="images/avatar.svg")
 
     def __str__(self):
         return self.user.username

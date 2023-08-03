@@ -60,7 +60,7 @@ def registerPage(request):
         # If username is unique, create the user
         my_user = User.objects.create_user(uname, email, pass1)
         my_user.save()
-        return redirect('home')
+        return redirect('login')
     return render(request, 'userlogin/s.html')
 
 

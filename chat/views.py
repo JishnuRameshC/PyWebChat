@@ -4,9 +4,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
-from .models import Room, Topic, Message, User
+from .models import Room, Topic, Message, UserProfile
 from .forms import RoomForm, CustomUserChangeForm
-from django.contrib.auth.forms import UserChangeForm
+from django.contrib.auth.models import User
 
 def loginPage(request):
     page = 'login'
@@ -55,10 +55,10 @@ def home(request):
         Q(room__topic__name__icontains=q))[0:3]
 
     context = {'rooms': rooms, 'topics': topics,
-               'room_count': room_count, 'room_messages': room_messages}
+               'room_count': room_count, 'room_messages': room_messages,'user': request.user,}
     return render(request, 'base/home.html', context)
 
-
+@login_required(login_url='login')
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
@@ -81,10 +81,13 @@ def room(request, pk):
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
     rooms = user.room_set.all()
+    user_profile = user.userprofile
     room_messages = user.message_set.all()
     topics = Topic.objects.all()
     context = {'user': user, 'rooms': rooms,
-               'room_messages': room_messages, 'topics': topics}
+               'room_messages': room_messages,
+                'topics': topics,
+                'user_profile': user_profile,}
     return render(request, 'base/profile.html', context)
 
 
@@ -155,18 +158,19 @@ def deleteMessage(request, pk):
 
 
 @login_required
-def updateUser(request):
-    user = request.user
+def updateUser(request, pk):
+    user = request.user.userprofile
     form = CustomUserChangeForm(instance=user)
 
     if request.method == 'POST':
-        form = CustomUserChangeForm(instance=user)
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            print("Form data:", form.cleaned_data) 
-            return redirect('user-profile', pk=user.id)
+            return redirect('user-profile', pk=request.user.id)
+    else:
+        form = CustomUserChangeForm(instance=user)
 
-    return render(request, 'base/update-user.html', {'form': form})
+    return render(request, 'base/update-user.html', {'form': form, 'user': user})
 
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
